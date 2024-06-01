@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #2C3E50;
+  color: white;
+  height: 60px;
+}
+
+.logo {
+  font-size: 1.5em;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profile img {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+}
+
+aside {
+  width: 200px;
+  background-color: #34495E;
+  color: white;
+  padding-top: 20px;
+}
+
+aside nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside nav ul li {
+  margin: 20px 0;
+}
+
+aside nav ul li a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px 20px;
+}
+
+aside nav ul li a:hover {
+  background-color: #3C5D76;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+.overview {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metric {
+  background-color: #ECF0F1;
+  padding: 20px;
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+  border-radius: 5px;
+}
+
+.recent-activities {
+  margin-top: 20px;
+}
+
+.recent-activities ul {
+  list-style: none;
+  padding: 0;
+}
+
+.charts {
+  margin-top: 20px;
+}
+
+.quick-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}

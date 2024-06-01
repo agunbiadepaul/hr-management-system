@@ -3,12 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>HR Management System - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>HR Dashboard</h1>
-    <!-- Add HR specific functionalities here -->
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>HR Dashboard</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#overview">Dashboard Overview</a></li>
+                <li><a href="#employee-management">Employee Management</a></li>
+                <li><a href="#attendance-tracking">Attendance Tracking</a></li>
+                <li><a href="#leave-management">Leave Management</a></li>
+                <li><a href="#time-tracker">Time Tracker</a></li>
+                <li><a href="#department-managers">Department Managers</a></li>
+                <li><a href="#calendar">Calendar</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#logout">Log Out</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <section id="overview" class="section">
+                <h2>Dashboard Overview</h2>
+                <div class="stats">
+                    <div class="stat-item">
+                        <h3>Total Employees</h3>
+                        <p id="totalEmployees">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Employees on Leave</h3>
+                        <p id="employeesOnLeave">0</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>Pending Leave Requests</h3>
+                        <p id="pendingLeaveRequests">0</p>
+                    </div>
+                </div>
+                <div class="charts">
+                    <canvas id="attendanceChart"></canvas>
+                    <canvas id="leaveChart"></canvas>
+                </div>
+            </section>
+            <section id="employee-management" class="section">
+                <h2>Employee Management</h2>
+                <div class="add-employee-form">
+                    <h3>Add New Employee</h3>
+                    <form id="addEmployeeForm">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                        <label for="department">Department:</label>
+                        <input type="text" id="department" name="department" required>
+                        <button type="submit">Add Employee</button>
+                    </form>
+                </div>
+                <div class="employee-list">
+                    <h3>Employee List</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeeTableBody">
+                            <!-- Employee data will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="attendance-tracking" class="section">
+                <h2>Attendance Tracking</h2>
+                <div class="add-attendance-form">
+                    <h3>Add Attendance Record</h3>
+                    <form id="addAttendanceForm">
+                        <label for="employeeName">Employee Name:</label>
+                        <input type="text" id="employeeName" name="employeeName" required>
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                        <label for="status">Status:</label>
+                        <select id="status" name="status" required>
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                        <button type="submit">Add Record</button>
+                    </form>
+                </div>
+                <div class="attendance-list">
+                    <h3>Attendance Records</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Attendance records will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="leave-management" class="section">
+                <h2>Leave Management</h2>
+                <div class="add-leave-form">
+                    <h3>Leave Request</h3>
+                    <form id="leaveRequestForm">
+                        <label for="employeeLeaveName">Employee Name:</label>
+                        <input type="text" id="employeeLeaveName" name="employeeLeaveName" required>
+                        <label for="leaveDate">Date:</label>
+                        <input type="date" id="leaveDate" name="leaveDate" required>
+                        <label for="leaveStatus">Status:</label>
+                        <select id="leaveStatus" name="leaveStatus" required>
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                        <button type="submit">Submit Request</button>
+                    </form>
+                </div>
+                <div class="leave-list">
+                    <h3>Leave Requests</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveTableBody">
+                            <!-- Leave requests will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="time-tracker" class="section">
+                <h2>Time Tracker</h2>
+                <div class="time-tracker">
+                    <h3>Track Time</h3>
+                    <form id="timeTrackerForm">
+                        <label for="task">Task:</label>
+                        <input type="text" id="task" name="task" required>
+                        <label for="hours">Hours:</label>
+                        <input type="number" id="hours" name="hours" required>
+                        <button type="submit">Add Time</button>
+                    </form>
+                </div>
+                <div class="time-list">
+                    <h3>Time Records</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timeTableBody">
+                            <!-- Time records will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="department-managers" class="section">
+                <h2>Department Managers</h2>
+                <div class="add-manager-form">
+                    <h3>Add Department Manager</h3>
+                    <form id="addManagerForm">
+                        <label for="managerName">Manager Name:</label>
+                        <input type="text" id="managerName" name="managerName" required>
+                        <label for="managerDepartment">Department:</label>
+                        <input type="text" id="managerDepartment" name="managerDepartment" required>
+                        <button type="submit">Add Manager</button>
+                    </form>
+                </div>
+                <div class="manager-list">
+                    <h3>Department Managers</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Manager Name</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody id="managerTableBody">
+                            <!-- Manager data will be inserted here dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="calendar" class="section">
+                <h2>Calendar</h2>
+                <div class="calendar">
+                    <p>Calendar will be implemented here.</p>
+                </div>
+            </section>
+            <section id="settings" class="section">
+                <h2>Settings</h2>
+                <div class="settings">
+                    <h3>User Preferences</h3>
+                    <form id="settingsForm">
+                        <label for="theme">Theme:</label>
+                        <select id="theme" name="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                        <button type="submit">Save Settings</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
     <script src="js/scripts.js"></script>
-</body>
-</html>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const employeeData = [];
+            const attendanceData = [];
+            const leaveData = [];
+            const timeData = [];
+            const managerData = [];
+
+            const updateStats = () => {
+                document.getElementById('totalEmployees').textContent = employeeData.length;
+                document.getElementById('employeesOnLeave').textContent
