@@ -4,11 +4,195 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.3/main.min.css' rel='stylesheet' />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@5.11.3/main.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.11.3/main.min.js'></script>
 </head>
 <body>
-    <h1>Employee Dashboard</h1>
-    <!-- Add employee specific functionalities here -->
-    <script src="js/scripts.js"></script>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Employee Dashboard</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#profile">Profile</a></li>
+                <li><a href="#attendance">Attendance</a></li>
+                <li><a href="#leave">Leave Requests</a></li>
+                <li><a href="#tasks">Tasks</a></li>
+                <li><a href="#calendar">Calendar</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#logout">Log Out</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <section id="profile" class="section">
+                <h2>Profile</h2>
+                <div class="profile-info">
+                    <form id="profileForm">
+                        <label for="profileName">Name:</label>
+                        <input type="text" id="profileName" name="profileName" required>
+                        <label for="profileEmail">Email:</label>
+                        <input type="email" id="profileEmail" name="profileEmail" required>
+                        <label for="profileDepartment">Department:</label>
+                        <input type="text" id="profileDepartment" name="profileDepartment" required>
+                        <button type="submit">Update Profile</button>
+                    </form>
+                </div>
+            </section>
+            <section id="attendance" class="section">
+                <h2>Attendance</h2>
+                <div class="attendance-info">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="leave" class="section">
+                <h2>Leave Requests</h2>
+                <div class="leave-requests">
+                    <form id="leaveRequestForm">
+                        <label for="leaveDate">Date:</label>
+                        <input type="date" id="leaveDate" name="leaveDate" required>
+                        <label for="leaveReason">Reason:</label>
+                        <textarea id="leaveReason" name="leaveReason" required></textarea>
+                        <button type="submit">Request Leave</button>
+                    </form>
+                    <h3>My Leave Requests</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Reason</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveRequestsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="tasks" class="section">
+                <h2>Tasks</h2>
+                <div class="tasks-info">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="calendar" class="section">
+                <h2>Calendar</h2>
+                <div id='calendar'></div>
+            </section>
+            <section id="settings" class="section">
+                <h2>Settings</h2>
+                <div class="settings">
+                    <h3>User Preferences</h3>
+                    <form id="settingsForm">
+                        <label for="theme">Theme:</label>
+                        <select id="theme" name="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                        <button type="submit">Save Settings</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const attendanceData = [];
+            const leaveData = [];
+            const taskData = [];
+
+            const renderAttendance = () => {
+                const attendanceTableBody = document.getElementById('attendanceTableBody');
+                attendanceTableBody.innerHTML = '';
+                attendanceData.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.date}</td>
+                        <td>${record.status}</td>
+                    `;
+                    attendanceTableBody.appendChild(row);
+                });
+            };
+
+            const renderLeaveRequests = () => {
+                const leaveRequestsTableBody = document.getElementById('leaveRequestsTableBody');
+                leaveRequestsTableBody.innerHTML = '';
+                leaveData.forEach(request => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${request.date}</td>
+                        <td>${request.reason}</td>
+                        <td>${request.status}</td>
+                    `;
+                    leaveRequestsTableBody.appendChild(row);
+                });
+            };
+
+            const renderTasks = () => {
+                const tasksTableBody = document.getElementById('tasksTableBody');
+                tasksTableBody.innerHTML = '';
+                taskData.forEach(task => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${task.name}</td>
+                        <td>${task.deadline}</td>
+                        <td>${task.status}</td>
+                    `;
+                    tasksTableBody.appendChild(row);
+                });
+            };
+
+            document.getElementById('profileForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Update profile logic here
+            });
+
+            document.getElementById('leaveRequestForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const leaveDate = document.getElementById('leaveDate').value;
+                const leaveReason = document.getElementById('leaveReason').value;
+                leaveData.push({ date: leaveDate, reason: leaveReason, status: 'Pending' });
+                renderLeaveRequests();
+            });
+
+            document.getElementById('settingsForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Save settings logic here
+            });
+
+            // Initialize FullCalendar
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: [ 'dayGrid' ],
+                initialView: 'dayGridMonth'
+            });
+            calendar.render();
+
+            renderAttendance();
+            renderLeaveRequests();
+            renderTasks();
+        });
+    </script>
 </body>
 </html>
