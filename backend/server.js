@@ -1,4 +1,5 @@
 const express = require('express');
+const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -20,6 +21,16 @@ const authRoutes = require('./routes/auth');
 
 // Set up routes
 app.use('/api/auth', authRoutes);
+
+// Connect Database
+connectDB();
+
+app.use(express.json({ extended: false }));
+
+// Define Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/employee', require('./routes/employeeRoutes'));
+app.use('/api/hr', require('./routes/hrRoutes'));
 
 
 mongoose.connect(uri, process.env.MONGO_URI, {

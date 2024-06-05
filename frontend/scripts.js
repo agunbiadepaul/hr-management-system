@@ -1,56 +1,71 @@
-document.addEventListener("DOMContentLoaded", function() {
-  // Fetch data from the backend API and populate the dashboard
+document.addEventListener("DOMContentLoaded", () => {
+    // Example function to fetch and display stats
+    fetchStats();
 
-  // Example: Fetch total employees
-  fetch('/api/employees/count')
-      .then(response => response.json())
-      .then(data => {
-          document.getElementById('totalEmployees').textContent = data.count;
-      })
-      .catch(error => console.error('Error fetching total employees:', error));
-
-  // Example: Fetch recent activities
-  fetch('/api/activities/recent')
-      .then(response => response.json())
-      .then(data => {
-          const recentActivitiesList = document.getElementById('recentActivities');
-          data.activities.forEach(activity => {
-              const listItem = document.createElement('li');
-              listItem.textContent = activity.description;
-              recentActivitiesList.appendChild(listItem);
-          });
-      })
-      .catch(error => console.error('Error fetching recent activities:', error));
-  
-  // Add event listeners for quick action buttons
-  document.getElementById('addEmployeeBtn').addEventListener('click', function() {
-      // Open add employee form
-  });
-
-  document.getElementById('recordAttendanceBtn').addEventListener('click', function() {
-      // Open record attendance form
-  });
-
-  // Initialize charts using a library like Chart.js
-  const ctxAttendance = document.getElementById('attendanceChart').getContext('2d');
-  const attendanceChart = new Chart(ctxAttendance, {
-      type: 'line',
-      data: {
-          // Data for attendance chart
-      },
-      options: {
-          // Options for attendance chart
-      }
-  });
-
-  const ctxLeave = document.getElementById('leaveChart').getContext('2d');
-  const leaveChart = new Chart(ctxLeave, {
-      type: 'bar',
-      data: {
-          // Data for leave chart
-      },
-      options: {
-          // Options for leave chart
-      }
-  });
+    // Event listeners for form submissions
+    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    document.getElementById('signupForm').addEventListener('submit', handleSignup);
 });
+
+async function fetchStats() {
+    try {
+        const response = await fetch('/api/stats');
+        const data = await response.json();
+
+        document.querySelector('.stat-item p.total-employees').innerText = data.totalEmployees;
+        document.querySelector('.stat-item p.employees-on-leave').innerText = data.employeesOnLeave;
+        document.querySelector('.stat-item p.pending-leave-requests').innerText = data.pendingLeaveRequests;
+
+    } catch (error) {
+        console.error('Error fetching stats:', error);
+    }
+}
+
+async function handleLogin(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const credentials = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(credentials),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            window.location.href = data.redirectUrl;
+        } else {
+            alert('Login failed. Please check your credentials.');
+        }
+
+    } catch (error) {
+        console.error('Error during login:', error);
+    }
+}
+
+async function handleSignup(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const userDetails = Object.fromEntries(formData);
+
+    try {
+        const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userDetails),
+        });
+
+        if (response.ok) {
+            alert('Signup successful. Please login.');
+            window.location.href = '/login';
+        } else {
+            alert('Signup failed. Please try again.');
+        }
+
+    } catch (error) {
+        console.error('Error during signup:', error);
+    }
+}
