@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HR Management System - Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -232,4 +233,130 @@
 
             const updateStats = () => {
                 document.getElementById('totalEmployees').textContent = employeeData.length;
-                document.getElementById('employeesOnLeave').textContent
+                document.getElementById('employeesOnLeave').textContent = leaveData.filter(record => record.status === 'Approved').length;
+                document.getElementById('pendingLeaveRequests').textContent = leaveData.filter(record => record.status === 'Pending').length;
+            };
+
+            const renderEmployeeTable = () => {
+                const employeeTableBody = document.getElementById('employeeTableBody');
+                employeeTableBody.innerHTML = '';
+                employeeData.forEach(employee => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${employee.name}</td>
+                        <td>${employee.email}</td>
+                        <td>${employee.department}</td>
+                    `;
+                    employeeTableBody.appendChild(row);
+                });
+            };
+
+            const renderAttendanceTable = () => {
+                const attendanceTableBody = document.getElementById('attendanceTableBody');
+                attendanceTableBody.innerHTML = '';
+                attendanceData.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.employeeName}</td>
+                        <td>${record.date}</td>
+                        <td>${record.status}</td>
+                    `;
+                    attendanceTableBody.appendChild(row);
+                });
+            };
+
+            const renderLeaveTable = () => {
+                const leaveTableBody = document.getElementById('leaveTableBody');
+                leaveTableBody.innerHTML = '';
+                leaveData.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.employeeName}</td>
+                        <td>${record.date}</td>
+                        <td>${record.status}</td>
+                    `;
+                    leaveTableBody.appendChild(row);
+                });
+            };
+
+            const renderTimeTable = () => {
+                const timeTableBody = document.getElementById('timeTableBody');
+                timeTableBody.innerHTML = '';
+                timeData.forEach(record => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${record.task}</td>
+                        <td>${record.hours}</td>
+                    `;
+                    timeTableBody.appendChild(row);
+                });
+            };
+
+            const renderManagerTable = () => {
+                const managerTableBody = document.getElementById('managerTableBody');
+                managerTableBody.innerHTML = '';
+                managerData.forEach(manager => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${manager.name}</td>
+                        <td>${manager.department}</td>
+                    `;
+                    managerTableBody.appendChild(row);
+                });
+            };
+
+            document.getElementById('addEmployeeForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const department = document.getElementById('department').value;
+                employeeData.push({ name, email, department });
+                renderEmployeeTable();
+                updateStats();
+            });
+
+            document.getElementById('addAttendanceForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const employeeName = document.getElementById('employeeName').value;
+                const date = document.getElementById('date').value;
+                const status = document.getElementById('status').value;
+                attendanceData.push({ employeeName, date, status });
+                renderAttendanceTable();
+            });
+
+            document.getElementById('leaveRequestForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const employeeLeaveName = document.getElementById('employeeLeaveName').value;
+                const leaveDate = document.getElementById('leaveDate').value;
+                const leaveStatus = document.getElementById('leaveStatus').value;
+                leaveData.push({ employeeLeaveName, leaveDate, leaveStatus });
+                renderLeaveTable();
+                updateStats();
+            });
+
+            document.getElementById('timeTrackerForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const task = document.getElementById('task').value;
+                const hours = document.getElementById('hours').value;
+                timeData.push({ task, hours });
+                renderTimeTable();
+            });
+
+            document.getElementById('addManagerForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                const name = document.getElementById('managerName').value;
+                const department = document.getElementById('managerDepartment').value;
+                managerData.push({ name, department });
+                renderManagerTable();
+            });
+
+            renderEmployeeTable();
+            renderAttendanceTable();
+            renderLeaveTable();
+            renderTimeTable();
+            renderManagerTable();
+            updateStats();
+        });
+    </script>
+</body>
+</html>
