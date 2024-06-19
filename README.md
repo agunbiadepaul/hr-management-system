@@ -89,7 +89,7 @@ Feel free to reach out to me on LinkedIn for any inquiries or collaboration oppo
 - [GitHub Repository for the project](https://github.com/agunbiadepaul/hr-management-landing-page)
 - [Deployed Project Page](https://example-deployed-app-url.com)
 - [Project’s Landing Page](https://example-landing-page-url.com)
-- [Paul Agunbiade LinkedIn Profile](https://www.linkedin.com/in/paul-agunbiade)
+- [Paul Agunbiade LinkedIn Profile](https://www.linkedin.com/in/paul-agunbiade-9519441a2/)
 
 ---
 
