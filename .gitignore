@@ -36,3 +36,4 @@ Dockerfile
 *.zip
 *.tar.gz
 *.rar
+.vercel
